@@ -1,8 +1,6 @@
 <h1 align="center">Layers Renderer</h1>
 
-<p align="center">
 ![Supports Enonic XP v6.11](https://img.shields.io/badge/xp-6.11-blue.svg)
-</p>
 
 ## About ##
 
