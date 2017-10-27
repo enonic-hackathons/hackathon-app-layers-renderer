@@ -1,0 +1,105 @@
+= Layers Renderer
+
+=== Description
+
+A widget, that renders site layers and components into simple graphical colorful grid.
+
+=== Usage
+
+1. Deploy the widget with the following command:
+```bash
+./gradlew deploy
+```
+
+2. Open the Enonic XP Content Studio;
+3. Select any content;
+4. Open the widgets panel on  the right and select Layers Renderer.
+
+=== Development
+
+===== Step 1: Choose a starter
+
+Create an application template, using any starter, present in Enonic link:https://github.com/enonic?utf8=✓&q=starter[repo].
+For the widgets like this link:https://github.com/enonic/starter-vanilla[vanilla starter] should be enough.
+
+The detailed instruction on how to initialize the project using a starter can be found in README file a repository of the starter you choose.
+
+```bash
+mkdir new-project
+cd new-project
+[$XP_INSTALL]/toolbox/toolbox.sh init-project -n com.edloidas.layersenderer -r starter-vanilla
+```
+
+===== Step 2: Create template
+
+Since we are creating a widget, all files should be placed under the `src/main/resources/admin/widgets/layersrenderer`. The last folder name is the name of out widget.
+We should place an XML descriptor with the name, that matches the name of the widget (`layersrenderer.xml`):
+```XML
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+  <display-name>Layers Renderer</display-name>
+  <interfaces>
+    <interface>com.enonic.xp.content-manager.context-widget</interface>
+  </interfaces>
+</widget>
+
+```
+
+We must also create a view (`layersrenderer.html`):
+```html
+<body>
+  <div>
+      <!-- Styles -->
+      <link rel="stylesheet" href="../../../assets/css/layersrenderer.css"
+            data-th-href="${portal.assetUrl({'_path=css/layersrenderer.css'})}"
+            type="text/css" media="all"/>
+      <style data-th-if="${css}" data-th-text="${css}"></style>
+
+      <div data-th-id="'layersrendererid_' + ${uid}" class="layersrenderer">
+
+      </div>
+  </div>
+</body>
+<script th:inline="javascript">
+/*<![CDATA[*/
+  var uid = /*[[${uid}]]*/ 'value';
+  var data = /*[[${data}]]*/ 'value';
+/*]]>*/
+</script>
+<script data-th-src="${portal.assetUrl({'_path=js/layersrenderer.js'})}"></script>
+```
+
+...and controller (`layersrenderer.js`) for our widget:
+```js
+var contentLib = require('/lib/xp/content');
+var portalLib = require('/lib/xp/portal');
+var thymeleaf = require('/lib/xp/thymeleaf');
+var ioLib = require('/lib/xp/io');
+
+var view = resolve('layersrenderer.html');
+var styles = ioLib.getResource(('/assets/css/layersrenderer.css'));
+var css = ioLib.readText(styles.getStream());
+
+function handleGet(req) {
+    var uid = req.params.uid;
+    var key = req.params.contentId || portalLib.getContent()._id;
+    var data = contentLib.get({ key: key, branch: 'draft' });
+
+    var params = {
+        uid: uid,
+        data: data.page || null
+    };
+
+    return {
+        contentType: 'text/html',
+        body: thymeleaf.render(view, params)
+    };
+}
+
+exports.get = handleGet;
+```
+
+===== Step 3: Create assets
+
+All sources should be placed under the `src/main/resources/assets` directory.
+Lets create there a file with styles (`css/layersenderer.css`) and a file with scripts (`js/layersenderer.js`). Take a note, that you should follow any convention and can give those files any name.

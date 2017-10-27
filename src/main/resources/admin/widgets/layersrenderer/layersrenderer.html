@@ -1,0 +1,20 @@
+<body>
+  <div>
+      <!-- Styles -->
+      <link rel="stylesheet" href="../../../assets/css/layersrenderer.css"
+            data-th-href="${portal.assetUrl({'_path=css/layersrenderer.css'})}"
+            type="text/css" media="all"/>
+      <style data-th-if="${css}" data-th-text="${css}"></style>
+
+      <div data-th-id="'layersrendererid_' + ${uid}" class="layersrenderer">
+
+      </div>
+  </div>
+</body>
+<script th:inline="javascript">
+/*<![CDATA[*/
+  var uid = /*[[${uid}]]*/ 'value';
+  var data = /*[[${data}]]*/ 'value';
+/*]]>*/
+</script>
+<script data-th-src="${portal.assetUrl({'_path=js/layersrenderer.js'})}"></script>
