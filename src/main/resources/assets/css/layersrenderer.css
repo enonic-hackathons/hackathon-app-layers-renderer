@@ -26,7 +26,7 @@
 }
 
 .layersrenderer__template {
-  background: #9fca56;
+  background-color: #a074c4;
 }
 
 .layersrenderer__layout {
@@ -34,5 +34,9 @@
 }
 
 .layersrenderer__region {
-  background: #a074c4;
+  background-color: #9fca56;
+}
+
+.layersrenderer__part {
+  background-color: #e6cd69;
 }
