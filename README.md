@@ -6,6 +6,10 @@
 
 A widget, that renders site layers and components into simple graphical colorful grid.
 
+## Assets ##
+
+Icon by [icon8](https://icons8.com/icon/726/layers).
+
 ## License ##
 
 [MIT](LICENSE) © [Enonic](https://enonic.com)
